@@ -1,12 +1,12 @@
-# Playlink
-Playlink is a CLI tool that generates YouTube playlists from a file.
+# yt-playlist-gen
+yt-playlist-gen is a CLI tool that generates YouTube playlists from a file.
 
 Please note that since YouTube has a cap for anonymous playlists, the resulting playlists will have at most `LIMIT` (default being 50) videos.
 
-# Usage and options
+## Usage and options
 ### Usage
 ```
-python playlink.py [-h] [-O OUTPUT] [--limit LIMIT] [--repeats | --no-repeats] [--auto | --no-auto] [--show | --no-show] [--progress | --no-progress] input
+python yt-playlist-gen.py [-h] [-O OUTPUT] [--limit LIMIT] [--repeats | --no-repeats] [--auto | --no-auto] [--show | --no-show] [--progress | --no-progress] input
 ```
 ### Options
 ```

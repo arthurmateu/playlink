@@ -4,7 +4,7 @@ import webbrowser
 
 # Arguments
 parser = argparse.ArgumentParser(
-    prog="playlink", 
+    prog="yt-playlist-gen", 
     description="Transforms individual YouTube links into a playlist",
 )
 parser.add_argument(
