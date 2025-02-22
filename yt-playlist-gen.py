@@ -4,7 +4,7 @@ import webbrowser
 
 # Arguments
 parser = argparse.ArgumentParser(
-    prog="yt-playlist-gen", 
+    prog="yt-playlist-gen",
     description="Transforms individual YouTube links into a playlist",
 )
 parser.add_argument(
@@ -12,12 +12,13 @@ parser.add_argument(
     help="input `.txt` filename with youtube links",
 )
 parser.add_argument(
-    "-O", "--output", 
+    "-O",
+    "--output",
     default="output.txt",
     help=".txt output filename (default: 'output.txt')",
 )
 parser.add_argument(
-    "--limit", 
+    "--limit",
     type=int,
     default=50,
     help="Video limit per playlist (default: 50 - maximum for YouTube anonymous playlists)",
@@ -50,7 +51,6 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-
 # Assigning arguments to variables
 playlist_limit = args.limit
 input_file = args.input
@@ -58,16 +58,17 @@ output_file = args.output if args.output[-4:] == ".txt" else args.output + ".txt
 repeats = args.repeats
 auto = args.auto
 show_stdout = args.show or args.auto
-progress = args.progress or args.auto
-
+show_progress = args.progress or args.auto
 
 
 # Relevant functions
 def clean(link):
     for identifier in possible_link_identifiers:
-        if identifier in link: 
+        if identifier in link:
             start = link.find(identifier) + len(identifier)
-            video_id = link[start:start + 11] # YouTube's video IDs are 11 characters long
+            video_id = link[
+                start : start + 11
+            ]  # YouTube's video IDs are 11 characters long
 
             return video_id if len(video_id) else "INVALID-ID"
 
@@ -78,7 +79,7 @@ def separate(video_ids):
     links = []
 
     for i in range(0, len(video_ids), playlist_limit):
-        batch = video_ids[i:i+playlist_limit]
+        batch = video_ids[i : i + playlist_limit]
         cur_playlist = base_link + ",".join(batch)
 
         links.append(cur_playlist)
@@ -87,22 +88,30 @@ def separate(video_ids):
 
 
 def progress(message):
-    if progress:
+    if show_progress:
         print(message)
 
 
-
 # Global variables
-possible_link_identifiers = ["?v=", "&v=", "shorts/", "%3Fv%3D", "youtu.be/", "%26v%3D", "/v/", "embed/", "live/", "/e/", "watch/"]
+possible_link_identifiers = [
+    "?v=",
+    "&v=",
+    "shorts/",
+    "%3Fv%3D",
+    "youtu.be/",
+    "%26v%3D",
+    "/v/",
+    "embed/",
+    "live/",
+    "/e/",
+    "watch/",
+]
 base_link = "https://www.youtube.com/watch_videos?video_ids="
 
-# Tried having just a video_ids variable but my editor was giving me a ton of errors. 
+# Tried having just a video_ids variable but my editor was giving me a ton of errors.
 # I don't like the color red so I just opted for this compromise.
-u_video_ids = set() 
+u_video_ids = set()
 video_ids = []
-
-
-
 
 
 # Actual script begins here
@@ -140,7 +149,7 @@ with open(output_file, "w") as file:
 # \r --> Resets cursor to start of the line
 # \033[K --> Clears to end of the line
 if show_stdout:
-    print(f"# Playlist links:\n")
+    print("# Playlist links:\n")
 
     for link in links:
         print(f"\033[F\r\033[K{link}", end="\n\n")
@@ -149,8 +158,8 @@ if show_stdout:
             webbrowser.open_new_tab(link)
 
             pause = input("\033[F\r\033[KContinue? [Y/n] - ").upper()
-            if pause and pause[0] == 'N':
-                print(f"\033[F\r\033[K^ Last accessed playlist ^", end="\n\n")
+            if pause and pause[0] == "N":
+                print("\033[F\r\033[K^ Last accessed playlist ^", end="\n\n")
                 auto = False
 
-    print(f"\033[F\r\033[K", end="") # Clean up last empty line
+    print("\033[F\r\033[K", end="")  # Clean up last empty line
